@@ -1,4 +1,4 @@
-# Phassion - A php session abstraction
+# Session - A php session abstraction
 
 A framework agnostic session library for php with convenient dot notation access.
 
