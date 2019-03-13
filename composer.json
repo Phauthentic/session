@@ -1,31 +1,35 @@
 {
-    "name": "burzum/php-session",
-   	"description": "php session abstraction",
-   	"type": "library",
-   	"license": "MIT",
-    "require-dev": {
-        "psr/http-server-middleware": "^1.0",
-        "phpunit/phpunit": "^7.4",
-        "squizlabs/php_codesniffer": "^3.3",
-        "psr/cache": "^1.0"
-    },
-    "require": {
-        "adbario/php-dot-notation": "^2.1"
-    },
-    "suggest": {
-        "psr/http-server-middleware": "Required if you want to use the session middleware"
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "autoload": {
-        "psr-4": {
-            "Burzum\\Session\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Burzum\\Session\\Test\\": "tests/",
-            "Burzum\\Session\\Test\\App\\": "tests/test_app/App/"
-        }
+  "name": "phauthentic/session",
+  "description": "php session abstraction",
+  "type": "library",
+  "license": "MIT",
+  "require": {
+    "adbario/php-dot-notation": "^2.1"
+  },
+  "require-dev": {
+    "ext-pdo": "*",
+    "psr/http-server-middleware": "^1.0",
+    "psr/cache": "^1.0",
+    "phpunit/phpunit": "^7.4",
+    "squizlabs/php_codesniffer": "^3.3"
+  },
+  "suggest": {
+    "psr/http-server-middleware": "Required if you want to use the session middleware"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Phauthentic\\Session\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phauthentic\\Session\\Test\\": "tests/",
+      "Phauthentic\\Session\\Test\\App\\": "tests/test_app/App/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  }
 }

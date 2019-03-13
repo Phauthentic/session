@@ -13,13 +13,10 @@ declare(strict_types=1);
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
-namespace Burzum\Session;
+namespace Phauthentic\Session;
 
 use Adbar\Dot;
-use Burzum\Session\SessionConfig;
-use Burzum\Session\SessionConfigInterface;
-use Burzum\Session\SessionInterface;
-use InvalidArgumentException;
+use Phauthentic\Session\Config;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -48,7 +45,7 @@ class Session implements SessionInterface
     /**
      * The Session handler instance used as an engine for persisting the session data.
      *
-     * @var \Burzum\Session\SessionConfigInterface
+     * @var \Phauthentic\Session\ConfigInterface
      */
     protected $config;
 
@@ -90,13 +87,13 @@ class Session implements SessionInterface
      * @param array $config The Configuration to apply to this session object
      */
     public function __construct(
-        ?SessionConfigInterface $config = null,
+        ?ConfigInterface $config = null,
         ?SessionHandlerInterface $handler = null
     ) {
-        if (!empty($config)) {
+        if ($config !== null) {
             $this->config = $config;
         } else {
-            $this->config = new SessionConfig();
+            $this->config = new Config();
             $this->config->setUseTransSid(false);
         }
 
@@ -110,6 +107,9 @@ class Session implements SessionInterface
         session_register_shutdown();
     }
 
+    /**
+     * @return \Phauthentic\Session\ConfigInterface
+     */
     public function config()
     {
         return $this->config;
@@ -144,7 +144,7 @@ class Session implements SessionInterface
 
         if ($this->isCLI) {
             $_SESSION = [];
-            $this->id('cli');
+            $this->setId('cli');
 
             return $this->started = true;
         }
@@ -173,6 +173,26 @@ class Session implements SessionInterface
     }
 
     /**
+     * Returns true if the session is no longer valid because the last time it was
+     * accessed was after the configured timeout.
+     *
+     * @return bool
+     */
+    protected function timedOut(): bool {
+        $time = $this->read('Config.time');
+        $result = false;
+
+        $checkTime = $time !== null && $this->lifetime > 0;
+        if ($checkTime && (time() - (int)$time > $this->lifetime)) {
+            $result = true;
+        }
+
+        $this->write('Config.time', time());
+
+        return $result;
+    }
+
+    /**
      * Determine if Session has already been started.
      *
      * @return bool True if session has been started.
@@ -190,7 +210,7 @@ class Session implements SessionInterface
      */
     public function check(?string $name = null): bool
     {
-        if ($this->hasSession() && !$this->started()) {
+        if ($this->exists() && !$this->started()) {
             $this->start();
         }
 
@@ -210,7 +230,7 @@ class Session implements SessionInterface
      */
     public function read(?string $name = null)
     {
-        if ($this->hasSession() && !$this->started()) {
+        if ($this->exists() && !$this->started()) {
             $this->start();
         }
 
@@ -237,6 +257,7 @@ class Session implements SessionInterface
         if (empty($name)) {
             return null;
         }
+
         $value = $this->read($name);
         if ($value !== null) {
             $dot = new Dot($_SESSION);
@@ -293,10 +314,10 @@ class Session implements SessionInterface
     public function id(?string $id = null): string
     {
         if ($id !== null && !headers_sent()) {
-            session_id($id);
+            $this->setId($id);
         }
 
-        return session_id();
+        return $this->getId();
     }
 
     /**
@@ -306,20 +327,36 @@ class Session implements SessionInterface
      */
     public function getId(): string
     {
-        return session_id();
+        return (string)session_id();
     }
 
     /**
      * Sets the session id
      *
+     * Calling this method will not auto start the session. You might have to manually
+     * assert a started session.
+     *
+     * Passing an id into it, you can also replace the session id if the session
+     * has not already been started.
+     *
+     * Note that depending on the session handler, not all characters are allowed
+     * within the session id. For example, the file session handler only allows
+     * characters in the range a-z A-Z 0-9 , (comma) and - (minus).
+     *
      * @param string $id Session Id
-     * @return void
+     * @return $this
      */
-    public function setId(string $id): void
+    public function setId(string $id): self
     {
-        if ($id !== null && !headers_sent()) {
-            session_id($id);
+        if (headers_sent()) {
+            throw new RuntimeException(
+                'Headers already sent. You can\'t set the session id anymore'
+            );
         }
+
+        session_id($id);
+
+        return $this;
     }
 
     /**
@@ -331,7 +368,7 @@ class Session implements SessionInterface
     public function delete(string $name): void
     {
         if ($this->check($name)) {
-            $this->overwrite($_SESSION, (new Dot($_SESSION))->delete($name));
+            $this->overwrite($_SESSION, (array)(new Dot($_SESSION))->delete($name));
         }
     }
 
@@ -351,6 +388,7 @@ class Session implements SessionInterface
                 }
             }
         }
+
         foreach ($new as $key => $var) {
             $old[$key] = $var;
         }
@@ -363,7 +401,7 @@ class Session implements SessionInterface
      */
     public function destroy()
     {
-        if ($this->hasSession() && !$this->started()) {
+        if ($this->exists() && !$this->started()) {
             $this->start();
         }
 
@@ -396,22 +434,12 @@ class Session implements SessionInterface
      *
      * @return bool
      */
-    public function sessionExists()
+    public function exists()
     {
         return !ini_get('session.use_cookies')
             || isset($_COOKIE[session_name()])
             || $this->isCLI
             || (ini_get('session.use_trans_sid') && isset($_GET[session_name()]));
-    }
-
-    /**
-     * Returns whether a session exists
-     *
-     * @return bool
-     */
-    public function hasSession()
-    {
-        return $this->sessionExists();
     }
 
     /**
@@ -421,7 +449,7 @@ class Session implements SessionInterface
      */
     public function renew(): void
     {
-        if (!$this->hasSession() || $this->isCLI) {
+        if (!$this->exists() || $this->isCLI) {
             return;
         }
 

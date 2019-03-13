@@ -1,13 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace Burzum\Session\Middleware;
+namespace Phauthentic\Session\Middleware;
 
-use Burzum\Session\SessionInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
+use Phauthentic\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RuntimeException;
@@ -27,14 +25,14 @@ class SessionMiddleware implements MiddlewareInterface
     /**
      * Session Object
      *
-     * @var \Burzum\Session\SessionInterface
+     * @var \Phauthentic\Session\SessionInterface
      */
     protected $session;
 
     /**
      * Constructor.
      *
-     * @param \Burzum\Session\SessionInterface
+     * @param \Phauthentic\Session\SessionInterface
      * @param \Psr\Http\Message\ResponseFactoryInterface $responseFactory Factory.
      */
     public function __construct(
@@ -68,8 +66,10 @@ class SessionMiddleware implements MiddlewareInterface
     protected function addAttribute(ServerRequestInterface $request, string $name, $value): ServerRequestInterface
     {
         if ($request->getAttribute($name)) {
-            $message = sprintf('Request attribute `%s` already exists.', $name);
-            throw new RuntimeException($message);
+            throw new RuntimeException(sprintf(
+                'Request attribute `%s` is already in use.',
+                $name
+            ));
         }
 
         return $request->withAttribute($name, $value);
@@ -82,7 +82,11 @@ class SessionMiddleware implements MiddlewareInterface
      */
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $request = $this->addAttribute($request, $this->sessionAttribute, $this->session);
+        $request = $this->addAttribute(
+            $request,
+            $this->sessionAttribute,
+            $this->session
+        );
 
         return $handler->handle($request);
     }

@@ -1,13 +1,13 @@
 <?php
 declare(strict_types=1);
 
-namespace Burzum\Session;
+namespace Phauthentic\Session;
 
 use PDO;
 use SessionHandlerInterface;
 
 /**
- * DatabaseSession provides methods to be used with Session.
+ * Generic PDO Session Handler
  */
 class PdoHandler implements SessionHandlerInterface
 {

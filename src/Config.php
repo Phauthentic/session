@@ -1,34 +1,19 @@
 <?php
 declare(strict_types=1);
 
-namespace Burzum\Session;
+namespace Phauthentic\Session;
 
 use RuntimeException;
 
 /**
  * Session Configuration Abstraction
- *
- * Note that in PHP 7.2.0+ session.save_handler can't be set to user by the user!
- *
- * @link https://github.com/php/php-src/commit/a93a51c3bf4ea1638ce0adc4a899cb93531b9f0d
- * @link http://php.net/manual/en/session.configuration.php
  */
-class SessionConfig implements SessionConfigInterface
+class Config implements ConfigInterface
 {
     /**
      * @inheritDoc
      */
-    public function setGcLifeTime(int $minutes): SessionConfigInterface
-    {
-        $this->iniSet('session.gc_maxlifetime', 60 * $minutes);
-
-        return $this;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    function setUseTransSid(bool $useTransSid): SessionConfigInterface
+    function setUseTransSid(bool $useTransSid): ConfigInterface
     {
         $this->iniSet('session.use_trans_sid', $useTransSid);
 
@@ -38,7 +23,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setSerializeHandler(string $handler): SessionConfigInterface
+    function setSerializeHandler(string $handler): ConfigInterface
     {
         $this->iniSet('session.serialize_handler', $handler);
 
@@ -48,7 +33,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setStrictMode(bool $useStrictMode): SessionConfigInterface
+    function setStrictMode(bool $useStrictMode): ConfigInterface
     {
         $this->iniSet('session.use_strict_mode', $useStrictMode);
 
@@ -58,7 +43,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookiePath(bool $path): SessionConfigInterface
+    function setCookiePath(bool $path): ConfigInterface
     {
         $this->iniSet('session.cookie_path', $path);
 
@@ -68,7 +53,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookieHttpOnly(bool $onlyHttp): SessionConfigInterface
+    function setCookieHttpOnly(bool $onlyHttp): ConfigInterface
     {
         $this->iniSet('session.cookie_httponly', $onlyHttp);
 
@@ -78,7 +63,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookieSecure(bool $secure): SessionConfigInterface
+    function setCookieSecure(bool $secure): ConfigInterface
     {
         $this->iniSet('session.cookie_secure', $secure);
 
@@ -88,7 +73,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setSessionName(bool $name): SessionConfigInterface
+    function setSessionName(bool $name): ConfigInterface
     {
         $this->iniSet('session.name', $name);
 
@@ -98,7 +83,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setUseCookies(bool $useCookies): SessionConfigInterface
+    function setUseCookies(bool $useCookies): ConfigInterface
     {
         $this->iniSet('session.use_cookies', $useCookies);
 
@@ -108,7 +93,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    function setSavePath(string $path): SessionConfigInterface
+    function setSavePath(string $path): ConfigInterface
     {
         $this->iniSet('session.save_path', $path);
 
@@ -116,14 +101,31 @@ class SessionConfig implements SessionConfigInterface
     }
 
     /**
+     * Checks an edge case for the handler
+     *
+     * @link https://github.com/php/php-src/commit/a93a51c3bf4ea1638ce0adc4a899cb93531b9f0d
+     * @link http://php.net/manual/en/session.configuration.php
+     * @param string $handler Handler
+     * @return void
+     */
+    protected function checkHandler(string $handler): void
+    {
+        if (version_compare(PHP_VERSION, '7.2.0', '>=')
+            && $handler === 'user'
+        ) {
+            throw new RuntimeException(
+                'You can\'t set the `user` save handler any longer in php >= 7.2. '
+                . 'See https://github.com/php/php-src/commit/a93a51c3bf4ea1638ce0adc4a899cb93531b9f0d'
+            );
+        }
+    }
+
+    /**
      * @inheritDoc
      */
-    function setSaveHandler(string $handler): SessionConfigInterface
+    function setSaveHandler(string $handler): ConfigInterface
     {
-        if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
-            throw new RuntimeException('You cant set the save handler any longer in php >= 7.2');
-        }
-
+        $this->checkHandler($handler);
         $this->iniSet('session.save_handler', $handler);
 
         return $this;
@@ -172,6 +174,16 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
+    public function setGcLifeTime(int $minutes): ConfigInterface
+    {
+        $this->iniSet('session.gc_maxlifetime', 60 * $minutes);
+
+        return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getGcLifeTime(): int
     {
         return (int)ini_get('session.gc_maxlifetime') / 60;
@@ -180,7 +192,7 @@ class SessionConfig implements SessionConfigInterface
     /**
      * @inheritDoc
      */
-    public function iniSet($setting, $value)
+    public function iniSet(string $setting, $value)
     {
         $result = ini_set($setting, (string)$value);
         if ($result === false) {
