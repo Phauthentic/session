@@ -49,39 +49,39 @@ interface ConfigInterface
     public function setSaveHandler(string $handler): ConfigInterface;
 
     /**
-     * Gets the trans id
+     * Gets the transaction id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-    public function getUseTransSid(bool $useTransSid): string;
+    public function getUseTransSid(): bool;
+
+    /**
+     * Gets the serialization handler
+     *
+     * @return \Phauthentic\Session\ConfigInterface
+     */
+    public function getSerializeHandler(): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-    public function getSerializeHandler(string $php): string;
+    public function getUseCookies(): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-    public function getUseCookies(bool $useCookies): string;
+    public function getSavePath(): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-    public function getSavePath(string $path): string;
-
-    /**
-     * Sets use trans id
-     *
-     * @return \Phauthentic\Session\ConfigInterface
-     */
-    public function getSaveHandler(string $handler): string;
+    public function getSaveHandler(): string;
 
     /**
      * Sets the garbage collection life time in minutes
@@ -97,4 +97,14 @@ interface ConfigInterface
      * @return int
      */
     public function getGcLifeTime(): int;
+
+    /**
+     * @@return \Phauthentic\Session\ConfigInterface
+     */
+    public function setCookieHttpOnly(bool $onlyHttp): ConfigInterface;
+
+    /**
+     * @bool
+     */
+    public function getCookieHttpOnly(): bool;
 }

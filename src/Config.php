@@ -13,7 +13,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setUseTransSid(bool $useTransSid): ConfigInterface
+    public function setUseTransSid(bool $useTransSid): ConfigInterface
     {
         $this->iniSet('session.use_trans_sid', $useTransSid);
 
@@ -23,7 +23,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setSerializeHandler(string $handler): ConfigInterface
+    public function setSerializeHandler(string $handler): ConfigInterface
     {
         $this->iniSet('session.serialize_handler', $handler);
 
@@ -33,7 +33,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setStrictMode(bool $useStrictMode): ConfigInterface
+    public function setStrictMode(bool $useStrictMode): ConfigInterface
     {
         $this->iniSet('session.use_strict_mode', $useStrictMode);
 
@@ -43,7 +43,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookiePath(bool $path): ConfigInterface
+    public function setCookiePath(bool $path): ConfigInterface
     {
         $this->iniSet('session.cookie_path', $path);
 
@@ -53,7 +53,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookieHttpOnly(bool $onlyHttp): ConfigInterface
+    public function setCookieHttpOnly(bool $onlyHttp): ConfigInterface
     {
         $this->iniSet('session.cookie_httponly', $onlyHttp);
 
@@ -63,7 +63,15 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setCookieSecure(bool $secure): ConfigInterface
+    public function getCookieHttpOnly(): bool
+    {
+        return (bool)ini_get('session.cookie_httponly');
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setCookieSecure(bool $secure): ConfigInterface
     {
         $this->iniSet('session.cookie_secure', $secure);
 
@@ -73,7 +81,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setSessionName(bool $name): ConfigInterface
+    public function setSessionName(bool $name): ConfigInterface
     {
         $this->iniSet('session.name', $name);
 
@@ -83,7 +91,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setUseCookies(bool $useCookies): ConfigInterface
+    public function setUseCookies(bool $useCookies): ConfigInterface
     {
         $this->iniSet('session.use_cookies', $useCookies);
 
@@ -93,7 +101,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setSavePath(string $path): ConfigInterface
+    public function setSavePath(string $path): ConfigInterface
     {
         $this->iniSet('session.save_path', $path);
 
@@ -123,7 +131,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function setSaveHandler(string $handler): ConfigInterface
+    public function setSaveHandler(string $handler): ConfigInterface
     {
         $this->checkHandler($handler);
         $this->iniSet('session.save_handler', $handler);
@@ -134,15 +142,15 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function getUseTransSid(bool $useTransSid): string
+    public function getUseTransSid(): bool
     {
-        return ini_get('session.use_trans_sid');
+        return (bool)ini_get('session.use_trans_sid');
     }
 
     /**
      * @inheritDoc
      */
-    function getSerializeHandler(string $php): string
+    public function getSerializeHandler(): string
     {
         return ini_get('session.serialize_handler');
     }
@@ -150,7 +158,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function getUseCookies(bool $useCookies): string
+    public function getUseCookies(): string
     {
         return ini_get('session.use_cookies');
     }
@@ -158,7 +166,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function getSavePath(string $path): string
+    public function getSavePath(): string
     {
         return ini_get('session.save_path');
     }
@@ -166,7 +174,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    function getSaveHandler(string $handler): string
+    public function getSaveHandler(): string
     {
         return ini_get('session.save_handler');
     }

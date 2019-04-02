@@ -21,5 +21,9 @@ class ConfigTest extends TestCase
             ->setCookieHttpOnly(true)
             ->setGcLifeTime(300)
             ->setUseTransSid(true);
+
+        $this->assertEquals(300, $config->getGcLifeTime());
+        $this->assertTrue($config->getCookieHttpOnly());
+        $this->assertTrue($config->getUseTransSid());
     }
 }
