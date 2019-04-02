@@ -7,6 +7,10 @@ use RuntimeException;
 
 /**
  * Session Configuration Abstraction
+ *
+ * This class provides a way to configure most of the session settings
+ *
+ * @link https://www.php.net/manual/en/session.security.ini.php
  */
 class Config implements ConfigInterface
 {
