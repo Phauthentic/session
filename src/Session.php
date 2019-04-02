@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace Phauthentic\Session;
 
 use Adbar\Dot;
-use Phauthentic\Session\Config;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -98,7 +97,7 @@ class Session implements SessionInterface
             $this->config->setUseTransSid(false);
         }
 
-        if (!empty($handler)) {
+        if ($handler !== null) {
             $this->setSaveHandler($handler);
         }
 
@@ -150,7 +149,7 @@ class Session implements SessionInterface
             return $this->started = true;
         }
 
-        if (session_status() === \PHP_SESSION_ACTIVE) {
+        if (session_status() === PHP_SESSION_ACTIVE) {
             throw new RuntimeException('Session was already started');
         }
 
@@ -201,7 +200,7 @@ class Session implements SessionInterface
      */
     public function started(): bool
     {
-        return $this->started || session_status() === \PHP_SESSION_ACTIVE;
+        return $this->started || session_status() === PHP_SESSION_ACTIVE;
     }
 
     /**
@@ -241,7 +240,7 @@ class Session implements SessionInterface
         }
 
         if ($name === null) {
-            return isset($_SESSION) ? $_SESSION : [];
+            return $_SESSION ?? [];
         }
 
         return (new Dot($_SESSION))->get($name);
@@ -288,8 +287,7 @@ class Session implements SessionInterface
             $write = [$name => $value];
         }
 
-        $data = isset($_SESSION) ? $_SESSION : [];
-        $data = new Dot($_SESSION);
+        $data = new Dot(isset($_SESSION) ? $_SESSION : []);
         foreach ($write as $key => $val) {
             $data->add($key, $val);
         }

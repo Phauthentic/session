@@ -99,7 +99,7 @@ interface ConfigInterface
     public function getGcLifeTime(): int;
 
     /**
-     * @@return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Session\ConfigInterface
      */
     public function setCookieHttpOnly(bool $onlyHttp): ConfigInterface;
 
