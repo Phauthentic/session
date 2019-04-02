@@ -1,5 +1,6 @@
 <?php
 declare(strict_types=1);
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -178,7 +179,8 @@ class Session implements SessionInterface
      *
      * @return bool
      */
-    protected function timedOut(): bool {
+    protected function timedOut(): bool
+    {
         $time = $this->read('Config.time');
         $result = false;
 
@@ -289,7 +291,7 @@ class Session implements SessionInterface
         $data = isset($_SESSION) ? $_SESSION : [];
         $data = new Dot($_SESSION);
         foreach ($write as $key => $val) {
-           $data->add($key, $val);
+            $data->add($key, $val);
         }
 
         $this->overwrite($_SESSION, $data->get());

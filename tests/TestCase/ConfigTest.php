@@ -15,7 +15,8 @@ class ConfigTest extends TestCase
      * @runInSeparateProcess
      * @return void
      */
-    public function testConfig(): void {
+    public function testConfig(): void
+    {
         $config = (new Config())
             ->setCookieHttpOnly(true)
             ->setGcLifeTime(300)

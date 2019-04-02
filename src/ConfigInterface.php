@@ -48,40 +48,40 @@ interface ConfigInterface
      */
     public function setSaveHandler(string $handler): ConfigInterface;
 
-	/**
-	 * Gets the trans id
+    /**
+     * Gets the trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
-	 */
-	public function getUseTransSid(bool $useTransSid): string;
+     */
+    public function getUseTransSid(bool $useTransSid): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-	public function getSerializeHandler(string $php): string;
+    public function getSerializeHandler(string $php): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-	public function getUseCookies(bool $useCookies): string;
+    public function getUseCookies(bool $useCookies): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-	public function getSavePath(string $path): string;
+    public function getSavePath(string $path): string;
 
     /**
      * Sets use trans id
      *
      * @return \Phauthentic\Session\ConfigInterface
      */
-	public function getSaveHandler(string $handler): string;
+    public function getSaveHandler(string $handler): string;
 
     /**
      * Sets the garbage collection life time in minutes
@@ -89,10 +89,10 @@ interface ConfigInterface
      * @param int $minutes GC life time in minutes
      * @return \Phauthentic\Session\ConfigInterface
      */
-	public function setGcLifeTime(int $minutes): ConfigInterface;
+    public function setGcLifeTime(int $minutes): ConfigInterface;
 
-	/**
-	 * Returns the GC life time in minutes
+    /**
+     * Returns the GC life time in minutes
      *
      * @return int
      */

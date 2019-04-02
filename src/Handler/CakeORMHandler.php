@@ -15,6 +15,7 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\Http\Session;
+
 /*
 use Cake\Datasource\RepositoryInterface;
 use Cake\ORM\Entity;

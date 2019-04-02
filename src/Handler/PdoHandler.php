@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Phauthentic\Session;
 
 use PDO;
+use RuntimeException;
 use SessionHandlerInterface;
 
 /**
@@ -47,6 +48,16 @@ class PdoHandler implements SessionHandlerInterface
     }
 
     /**
+     * Sets the table name
+     *
+     * @param string $table Table name
+     * @return self
+     */
+    public function setTable(string $table) {
+        $this->table = $table;
+    }
+
+    /**
      * Close the session
      *
      * @link http://php.net/manual/en/sessionhandlerinterface.close.php
@@ -56,8 +67,9 @@ class PdoHandler implements SessionHandlerInterface
      * </p>
      * @since 5.4.0
      */
-    public function close() {
-        // TODO: Implement close() method.
+    public function close()
+    {
+        return true;
     }
 
     /**
@@ -73,7 +85,11 @@ class PdoHandler implements SessionHandlerInterface
      */
     public function destroy($session_id)
     {
-        $this->pdo->prepare('DELETE FROM :table WHERE sid = :sid');
+        $statement = $this->prepareStatement("DELETE FROM {$this->table} WHERE id = :sid");
+
+        return $statement->execute([
+            'sid' => $session_id
+        ]);
     }
 
     /**
@@ -92,7 +108,7 @@ class PdoHandler implements SessionHandlerInterface
      */
     public function gc($maxlifetime)
     {
-        $statement = $this->pdo->prepare('SELECT * FROM :table WHERE :sid = :sessionId');
+        return true;
     }
 
     /**
@@ -109,7 +125,7 @@ class PdoHandler implements SessionHandlerInterface
      */
     public function open($save_path, $name)
     {
-        $statement = $this->pdo->prepare('SELECT * FROM :table WHERE :sid = :sessionId');
+        return true;
     }
 
     /**
@@ -126,7 +142,18 @@ class PdoHandler implements SessionHandlerInterface
      */
     public function read($session_id)
     {
-        $statement = $this->pdo->prepare('SELECT * FROM :table WHERE :sid = :sessionId');
+        $statement = $this->prepareStatement("SELECT * FROM {$this->table} WHERE id = :sid");
+        $statement->execute([
+            'sid' => $session_id
+        ]);
+
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if (!isset($result['data'])) {
+            return '';
+        }
+
+        return $result['data'];
     }
 
     /**
@@ -149,13 +176,20 @@ class PdoHandler implements SessionHandlerInterface
      */
     public function write($session_id, $session_data)
     {
-        $statement = $this->pdo->prepare('INSERT INTO :table (:sid) (:sessionId)');
+        $statement = $this->pdo->prepare("INSERT INTO {$this->table} (id, data, expires) VALUES (?,?,?)");
 
         return $statement->execute([
-            'table' => $this->table,
-            'sid' => $this->fieldMap['sid'],
-            'sessionId' => $session_id,
-            'sessionData' => $session_data
+            $session_id, $session_data, time()
         ]);
+    }
+
+    protected function prepareStatement(string $sql)
+    {
+        $statement = $this->pdo->prepare($sql);
+        if ($statement === false) {
+            throw new RuntimeException($this->pdo->errorInfo()[2]);
+        }
+
+        return $statement;
     }
 }
