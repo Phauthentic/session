@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Phauthentic\Session\Handler;
 
 use PDO;
+use PDOStatement;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -188,7 +189,7 @@ class PdoHandler implements SessionHandlerInterface
     protected function prepareStatement(string $sql)
     {
         $statement = $this->pdo->prepare($sql);
-        if ($statement === false) {
+        if (!$statement instanceof PDOStatement) {
             throw new RuntimeException($this->pdo->errorInfo()[2]);
         }
 

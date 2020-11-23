@@ -26,9 +26,9 @@ use Exception;
 class SessionException extends Exception
 {
     /**
-     * @return static
+     * @return self
      */
-    public static function headersAlreadySent()
+    public static function headersAlreadySent(): self
     {
         return new self(
             'Headers already sent. You can\'t set the session id anymore'
@@ -36,9 +36,9 @@ class SessionException extends Exception
     }
 
     /**
-     * @return static
+     * @return self
      */
-    public static function couldNotStart()
+    public static function couldNotStart(): self
     {
         return new self(
             'Could not start the session'
@@ -46,9 +46,9 @@ class SessionException extends Exception
     }
 
     /**
-     * @return static
+     * @return self
      */
-    public static function alreadyStarted()
+    public static function alreadyStarted(): self
     {
         return new self(
             'Session was already started'

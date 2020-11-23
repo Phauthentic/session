@@ -13,4 +13,3 @@ composer install --prefer-dist --no-interaction
 chmod -R +x ./bin
 sudo mkdir tmp
 sudo chmod -R 777 ./tmp
-
