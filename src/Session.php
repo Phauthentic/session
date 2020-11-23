@@ -110,7 +110,7 @@ class Session implements SessionInterface
     /**
      * @return \Phauthentic\Session\ConfigInterface
      */
-    public function config()
+    public function config(): ConfigInterface
     {
         return $this->config;
     }
@@ -283,36 +283,11 @@ class Session implements SessionInterface
     }
 
     /**
-     * Returns the session id.
-     *
-     * Calling this method will not auto start the session. You might have to manually
-     * assert a started session.
-     *
-     * Passing an id into it, you can also replace the session id if the session
-     * has not already been started.
-     *
-     * Note that depending on the session handler, not all characters are allowed
-     * within the session id. For example, the file session handler only allows
-     * characters in the range a-z A-Z 0-9 , (comma) and - (minus).
-     *
-     * @param string|null $id Id to replace the current session id
-     * @return string Session id
-     */
-    public function id(?string $id = null): string
-    {
-        if ($id !== null && !headers_sent()) {
-            $this->setId($id);
-        }
-
-        return $this->getId();
-    }
-
-    /**
      * Returns the current sessions id
      *
      * @return string
      */
-    public function getId(): string
+    public function id(): string
     {
         return (string)session_id();
     }

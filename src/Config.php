@@ -27,7 +27,11 @@ use RuntimeException;
  */
 class Config implements ConfigInterface
 {
-    public static function fromArray(array $config)
+    /**
+     * @param array $config
+     * @return \Phauthentic\Session\Config
+     */
+    public static function fromArray(array $config): Config
     {
         $that = new self();
 
@@ -74,7 +78,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    public function setCookiePath(bool $path): ConfigInterface
+    public function setCookiePath(string $path): ConfigInterface
     {
         $this->iniSet('session.cookie_path', $path);
 
@@ -112,7 +116,7 @@ class Config implements ConfigInterface
     /**
      * @inheritDoc
      */
-    public function setSessionName(bool $name): ConfigInterface
+    public function setSessionName(string $name): ConfigInterface
     {
         $this->iniSet('session.name', $name);
 
@@ -150,7 +154,7 @@ class Config implements ConfigInterface
     protected function checkHandler(string $handler): void
     {
         if (
-            version_compare(PHP_VERSION, '7.2.0', '>=')
+            PHP_VERSION_ID >= 70200
             && $handler === 'user'
         ) {
             throw new RuntimeException(

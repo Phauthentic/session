@@ -52,7 +52,7 @@ class PdoHandler implements SessionHandlerInterface
      * Sets the table name
      *
      * @param string $table Table name
-     * @return self
+     * @return void
      */
     public function setTable(string $table)
     {
@@ -151,11 +151,7 @@ class PdoHandler implements SessionHandlerInterface
 
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if (!isset($result['data'])) {
-            return '';
-        }
-
-        return $result['data'];
+        return $result['data'] ?? '';
     }
 
     /**

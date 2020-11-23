@@ -126,4 +126,39 @@ interface ConfigInterface
      * @bool
      */
     public function getCookieHttpOnly(): bool;
+
+    /**
+     * Sets the strict mode
+     *
+     * @param bool $useStrictMode Use strict mode
+     * @return \Phauthentic\Session\ConfigInterface
+     */
+    public function setStrictMode(bool $useStrictMode): ConfigInterface;
+
+    /**
+     * Sets the cookie path
+     *
+     * @param string $path Path
+     * @return \Phauthentic\Session\ConfigInterface
+     */
+    public function setCookiePath(string $path): ConfigInterface;
+
+    /**
+     * @param string $name
+     * @return \Phauthentic\Session\ConfigInterface
+     */
+    public function setSessionName(string $name): ConfigInterface;
+
+    /**
+     * @param string $setting Setting
+     * @param mixed $value
+     * @return mixed
+     */
+    public function iniSet(string $setting, $value);
+
+    /**
+     * @param bool $secure Secure
+     * @return \Phauthentic\Session\ConfigInterface
+     */
+    public function setCookieSecure(bool $secure): ConfigInterface;
 }

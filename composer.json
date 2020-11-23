@@ -37,27 +37,27 @@
         ],
         "test": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpunit"
+            "bin/phpunit"
         ],
         "test-coverage": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpunit --coverage-text"
+            "bin/phpunit --coverage-text"
         ],
         "test-coverage-html": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpunit --coverage-html tmp/coverage/"
+            "bin/phpunit --coverage-html tmp/coverage/"
         ],
         "cscheck": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpcs src/ tests/ --standard=phpcs.xml -s"
+            "bin/phpcs src/ tests/ --standard=phpcs.xml -s"
         ],
         "csfix": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpcbf src/ tests/ --standard=phpcs.xml"
+            "bin/phpcbf src/ tests/ --standard=phpcs.xml"
         ],
         "analyze": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "phpstan analyse src/"
+            "bin/phpstan analyse src/ -l 5"
         ],
         "phive": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
