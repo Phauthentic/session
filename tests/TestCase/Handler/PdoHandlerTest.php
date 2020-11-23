@@ -4,8 +4,7 @@ declare(strict_types=1);
 namespace Phauthentic\Session\Test\TestCase\Handler;
 
 use PDO;
-use Phauthentic\Session\PdoHandler;
-use Phauthentic\Session\Session;
+use Phauthentic\Session\Handler\PdoHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

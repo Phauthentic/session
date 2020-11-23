@@ -30,7 +30,7 @@ class SessionException extends Exception
      */
     public static function headersAlreadySent()
     {
-        return new static(
+        return new self(
             'Headers already sent. You can\'t set the session id anymore'
         );
     }
@@ -40,7 +40,7 @@ class SessionException extends Exception
      */
     public static function couldNotStart()
     {
-        return new static(
+        return new self(
             'Could not start the session'
         );
     }
@@ -50,7 +50,7 @@ class SessionException extends Exception
      */
     public static function alreadyStarted()
     {
-        return new static(
+        return new self(
             'Session was already started'
         );
     }

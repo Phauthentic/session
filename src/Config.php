@@ -29,11 +29,11 @@ class Config implements ConfigInterface
 {
     public static function fromArray(array $config)
     {
-        $that = new static();
+        $that = new self();
 
         foreach ($config as $key => $value) {
             $method = 'set' . $key;
-            if (method_exists($method)) {
+            if (method_exists($that, $method)) {
                 $that->$method($value);
             }
         }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session;
+namespace Phauthentic\Session\Handler;
 
 use PDO;
 use RuntimeException;

@@ -33,8 +33,7 @@ class SessionMiddleware implements MiddlewareInterface
     /**
      * Constructor.
      *
-     * @param \Phauthentic\Session\SessionInterface
-     * @param \Psr\Http\Message\ResponseFactoryInterface $responseFactory Factory.
+     * @param \Phauthentic\Session\SessionInterface $session Session
      */
     public function __construct(
         SessionInterface $session

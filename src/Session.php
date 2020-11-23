@@ -55,7 +55,7 @@ class Session implements SessionInterface
      *
      * @var bool
      */
-    protected bool $started;
+    protected bool $started = false;
 
     /**
      * The time in seconds the session will be valid for

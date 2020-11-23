@@ -63,13 +63,11 @@ class PsrCacheHandler implements SessionHandlerInterface
      */
     public function read($id)
     {
-        $value = $this->cachePool->getItem($id);
+        $cacheItem = $this->cachePool->getItem($id);
 
-        if ($value === null) {
-            return '';
-        }
+        $value = $cacheItem->get();
 
-        return $value;
+        return $value ?? null;
     }
 
     /**

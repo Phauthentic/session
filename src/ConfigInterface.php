@@ -76,28 +76,28 @@ interface ConfigInterface
     /**
      * Gets the serialization handler
      *
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return string
      */
     public function getSerializeHandler(): string;
 
     /**
      * Sets use trans id
      *
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return string
      */
     public function getUseCookies(): string;
 
     /**
-     * Sets use trans id
+     * Gets the save path
      *
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return string
      */
     public function getSavePath(): string;
 
     /**
-     * Sets use trans id
+     * Gets the save handler
      *
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return string
      */
     public function getSaveHandler(): string;
 
