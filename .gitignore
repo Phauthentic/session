@@ -1,8 +1,6 @@
 # User specific & automatically generated files #
 #################################################
 /composer.lock
-/phpunit.xml
-/phpcs.xml
 /tmp
 /vendor
 /bin
@@ -38,3 +36,4 @@ nbproject/*
 # Visual Studio Code
 .vscode
 /phive.phar
+/.phpunit.result.cache
