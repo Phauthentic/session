@@ -57,7 +57,7 @@
         ],
         "analyze": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
-            "bin/phpstan analyse src/ -l 5"
+            "bin/phpstan analyse src/"
         ],
         "phive": [
             "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",

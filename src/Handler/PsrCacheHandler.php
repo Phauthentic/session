@@ -2,7 +2,6 @@
 
 namespace Cake\Http\Session;
 
-use InvalidArgumentException;
 use Psr\Cache\CacheItemPoolInterface;
 use SessionHandlerInterface;
 
@@ -19,9 +18,12 @@ class PsrCacheHandler implements SessionHandlerInterface
      *
      * @var \Psr\Cache\CacheItemPoolInterface
      */
-    protected $cachePool;
+    protected CacheItemPoolInterface $cachePool;
 
-    protected $cacheItemClass;
+    /**
+     * @var string
+     */
+    protected string $cacheItemClass;
 
     /**
      * Constructor.
