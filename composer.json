@@ -1,35 +1,67 @@
 {
-  "name": "phauthentic/session",
-  "description": "php session abstraction",
-  "type": "library",
-  "license": "MIT",
-  "require": {
-    "adbario/php-dot-notation": "^2.1"
-  },
-  "require-dev": {
-    "ext-pdo": "*",
-    "psr/http-server-middleware": "^1.0",
-    "psr/cache": "^1.0",
-    "phpunit/phpunit": "^7.4",
-    "squizlabs/php_codesniffer": "^3.3"
-  },
-  "suggest": {
-    "psr/http-server-middleware": "Required if you want to use the session middleware"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "autoload": {
-    "psr-4": {
-      "Phauthentic\\Session\\": "src/"
+    "name": "phauthentic/session",
+    "description": "php session abstraction",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "adbario/php-dot-notation": "^2.1"
+    },
+    "require-dev": {
+        "php": "^7.4",
+        "ext-pdo": "*",
+        "psr/http-server-middleware": "^1.0",
+        "psr/cache": "^1.0",
+        "instituteweb/composer-scripts": "^1.1"
+    },
+    "suggest": {
+        "psr/http-server-middleware": "Required if you want to use the session middleware"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "psr-4": {
+            "Phauthentic\\Session\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phauthentic\\Session\\Test\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php config/composer_post_install.php"
+        ],
+        "test": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpunit"
+        ],
+        "test-coverage": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpunit --coverage-text"
+        ],
+        "test-coverage-html": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpunit --coverage-html tmp/coverage/"
+        ],
+        "cscheck": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpcs src/ tests/ --standard=phpcs.xml -s"
+        ],
+        "csfix": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpcbf src/ tests/ --standard=phpcs.xml"
+        ],
+        "analyze": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "phpstan analyse src/"
+        ],
+        "phive": [
+            "\\InstituteWeb\\ComposerScripts\\ImprovedScriptExecution::apply",
+            "php config/composer_phive.php"
+        ]
     }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Phauthentic\\Session\\Test\\": "tests/",
-      "Phauthentic\\Session\\Test\\App\\": "tests/test_app/App/"
-    }
-  },
-  "config": {
-    "sort-packages": true
-  }
 }

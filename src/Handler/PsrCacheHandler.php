@@ -1,4 +1,5 @@
 <?php
+
 namespace Cake\Http\Session;
 
 use InvalidArgumentException;
@@ -20,14 +21,12 @@ class PsrCacheHandler implements SessionHandlerInterface
      */
     protected $cachePool;
 
+    protected $cacheItemClass;
+
     /**
      * Constructor.
      *
-     * @param array $config The configuration to use for this engine
-     * It requires the key 'config' which is the name of the Cache config to use for
-     * storing the session
-     *
-     * @throws \InvalidArgumentException if the 'config' key is not provided
+     * @param \Psr\Cache\CacheItemPoolInterface $cacheItemPool
      */
     public function __construct(CacheItemPoolInterface $cacheItemPool)
     {
@@ -66,7 +65,7 @@ class PsrCacheHandler implements SessionHandlerInterface
     {
         $value = $this->cachePool->getItem($id);
 
-        if (empty($value)) {
+        if ($value === null) {
             return '';
         }
 

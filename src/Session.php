@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 /**
@@ -14,10 +15,10 @@ declare(strict_types=1);
  * @since         0.10.0
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace Phauthentic\Session;
 
 use Adbar\Dot;
-use RuntimeException;
 use SessionHandlerInterface;
 
 /**
@@ -40,41 +41,39 @@ class Session implements SessionInterface
      *
      * @var \SessionHandlerInterface
      */
-    protected $handler;
+    protected SessionHandlerInterface $handler;
 
     /**
      * The Session handler instance used as an engine for persisting the session data.
      *
      * @var \Phauthentic\Session\ConfigInterface
      */
-    protected $config;
+    protected ConfigInterface $config;
 
     /**
      * Indicates whether the sessions has already started
      *
      * @var bool
      */
-    protected $started;
+    protected bool $started;
 
     /**
      * The time in seconds the session will be valid for
      *
      * @var int
      */
-    protected $lifetime;
+    protected int $lifetime = 0;
 
     /**
      * Whether this session is running under a CLI environment
      *
      * @var bool
      */
-    protected $isCLI = false;
+    protected bool $isCli = false;
 
     /**
      * Constructor.
-     *
      * ### Configuration:
-     *
      * - timeout: The time in minutes the session should be valid for.
      * - cookiePath: The url path for which session cookie is set. Maps to the
      *   `session.cookie_path` php.ini config. Defaults to base path of app.
@@ -84,7 +83,8 @@ class Session implements SessionInterface
      *   the configuration array for the engine. You can set the `class` key to an already
      *   instantiated session handler object.
      *
-     * @param array $config The Configuration to apply to this session object
+     * @param \Phauthentic\Session\ConfigInterface|null $config The Configuration to apply to this session object
+     * @param \SessionHandlerInterface|null $handler
      */
     public function __construct(
         ?ConfigInterface $config = null,
@@ -102,7 +102,7 @@ class Session implements SessionInterface
         }
 
         $this->lifetime = (int)ini_get('session.gc_maxlifetime');
-        $this->isCLI = (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg');
+        $this->isCli = (PHP_SAPI === 'cli' || PHP_SAPI === 'phpdbg');
 
         session_register_shutdown();
     }
@@ -119,30 +119,30 @@ class Session implements SessionInterface
      * Set the engine property and update the session handler in PHP.
      *
      * @param \SessionHandlerInterface $handler The handler to set
-     * @return \SessionHandlerInterface
+     * @return void
      */
-    protected function setSaveHandler(SessionHandlerInterface $handler)
+    protected function setSaveHandler(SessionHandlerInterface $handler): void
     {
         if (!headers_sent()) {
             session_set_save_handler($handler, false);
         }
 
-        return $this->handler = $handler;
+        $this->handler = $handler;
     }
 
     /**
      * Starts the Session.
      *
      * @return bool True if session was started
-     * @throws \RuntimeException if the session was already started
+     * @throws \Phauthentic\Session\SessionException if the session was already started
      */
-    public function start()
+    public function start(): bool
     {
         if ($this->started) {
             return true;
         }
 
-        if ($this->isCLI) {
+        if ($this->isCli) {
             $_SESSION = [];
             $this->setId('cli');
 
@@ -150,7 +150,7 @@ class Session implements SessionInterface
         }
 
         if (session_status() === PHP_SESSION_ACTIVE) {
-            throw new RuntimeException('Session was already started');
+            throw SessionException::alreadyStarted();
         }
 
         if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
@@ -158,12 +158,12 @@ class Session implements SessionInterface
         }
 
         if (!session_start()) {
-            throw new RuntimeException('Could not start the session');
+            throw SessionException::couldNotStart();
         }
 
         $this->started = true;
 
-        if ($this->timedOut()) {
+        if ($this->hasExpired()) {
             $this->destroy();
 
             return $this->start();
@@ -173,24 +173,11 @@ class Session implements SessionInterface
     }
 
     /**
-     * Returns true if the session is no longer valid because the last time it was
-     * accessed was after the configured timeout.
-     *
-     * @return bool
+     * @return array|string|null
      */
-    protected function timedOut(): bool
+    protected function time()
     {
-        $time = $this->read('Config.time');
-        $result = false;
-
-        $checkTime = $time !== null && $this->lifetime > 0;
-        if ($checkTime && (time() - (int)$time > $this->lifetime)) {
-            $result = true;
-        }
-
-        $this->write('Config.time', time());
-
-        return $result;
+        return $this->read('Config.time');
     }
 
     /**
@@ -287,7 +274,7 @@ class Session implements SessionInterface
             $write = [$name => $value];
         }
 
-        $data = new Dot(isset($_SESSION) ? $_SESSION : []);
+        $data = new Dot($_SESSION ?? []);
         foreach ($write as $key => $val) {
             $data->add($key, $val);
         }
@@ -349,9 +336,7 @@ class Session implements SessionInterface
     public function setId(string $id): self
     {
         if (headers_sent()) {
-            throw new RuntimeException(
-                'Headers already sent. You can\'t set the session id anymore'
-            );
+            throw SessionException::headersAlreadySent();
         }
 
         session_id($id);
@@ -405,7 +390,7 @@ class Session implements SessionInterface
             $this->start();
         }
 
-        if (!$this->isCLI && session_status() === PHP_SESSION_ACTIVE) {
+        if (!$this->isCli && session_status() === PHP_SESSION_ACTIVE) {
             session_destroy();
         }
 
@@ -421,7 +406,7 @@ class Session implements SessionInterface
      * @param bool $renew If session should be renewed, as well. Defaults to false.
      * @return void
      */
-    public function clear($renew = false)
+    public function clear(bool $renew = false)
     {
         $_SESSION = [];
         if ($renew) {
@@ -438,7 +423,7 @@ class Session implements SessionInterface
     {
         return !ini_get('session.use_cookies')
             || isset($_COOKIE[session_name()])
-            || $this->isCLI
+            || $this->isCli
             || (ini_get('session.use_trans_sid') && isset($_GET[session_name()]));
     }
 
@@ -449,7 +434,7 @@ class Session implements SessionInterface
      */
     public function renew(): void
     {
-        if (!$this->exists() || $this->isCLI) {
+        if (!$this->exists() || $this->isCli) {
             return;
         }
 
@@ -478,7 +463,7 @@ class Session implements SessionInterface
      */
     public function hasExpired(): bool
     {
-        $time = $this->read('Config.time');
+        $time = $this->time();
         $result = false;
 
         $checkTime = $time !== null && $this->lifetime > 0;

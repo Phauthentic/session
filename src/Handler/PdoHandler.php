@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Phauthentic\Session;
@@ -53,7 +54,8 @@ class PdoHandler implements SessionHandlerInterface
      * @param string $table Table name
      * @return self
      */
-    public function setTable(string $table) {
+    public function setTable(string $table)
+    {
         $this->table = $table;
     }
 
@@ -183,6 +185,10 @@ class PdoHandler implements SessionHandlerInterface
         ]);
     }
 
+    /**
+     * @param string $sql
+     * @return bool|\PDOStatement
+     */
     protected function prepareStatement(string $sql)
     {
         $statement = $this->pdo->prepare($sql);
