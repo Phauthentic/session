@@ -161,4 +161,11 @@ interface ConfigInterface
      * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setCookieSecure(bool $secure): ConfigInterface;
+
+    /**
+     * Gets the cookie path
+     *
+     * @return string
+     */
+    public function getCookiePath(): string;
 }

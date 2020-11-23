@@ -39,7 +39,10 @@ class Config implements ConfigInterface
             $method = 'set' . $key;
             if (method_exists($that, $method)) {
                 $that->$method($value);
+                continue;
             }
+
+            ini_set('session.' . $key, $value);
         }
 
         return $that;
@@ -83,6 +86,14 @@ class Config implements ConfigInterface
         $this->iniSet('session.cookie_path', $path);
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getCookiePath(): string
+    {
+        return (string)ini_get('session.cookie_path');
     }
 
     /**
