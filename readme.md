@@ -14,21 +14,21 @@ Included:
 
 External handlers:
 * [Redis](https://github.com/1ma/RedisSessionHandler)
-* [PSR6 and PSR16 cache session adapter](https://github.com/php-cache/session-handler) 
+* [PSR6 and PSR16 cache session adapter](https://github.com/php-cache/session-handler)
 
-You can implement any other handler or use other already existing implementations that implement the native php [SessionHandlerInterface](http://php.net/manual/en/class.sessionhandlerinterface.php). 
+You can implement any other handler or use other already existing implementations that implement the native php [SessionHandlerInterface](http://php.net/manual/en/class.sessionhandlerinterface.php).
 
 ## Example
 
 This is a very simple example to give you an idea of how to use it:
 
 ```php
-use Phauthentic\Session\Session;
-use Phauthentic\Session\Config as SessionConfig;
+use Phauthentic\Infrastructure\Http\Session\Session;
+use Phauthentic\Infrastructure\Http\Session\Config as SessionConfig;
 
 $config = (new SessionConfig())
     ->setSessionName('my-app')
-    ->setGcMaxLifeTime(60);
+    ->setGcLifeTime(60);
 
 $session = new Session($config);
 $session->write('user', ['username' => 'foo']);

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session\Test\TestCase;
+namespace Phauthentic\Infrastructure\Http\Session\Test\TestCase;
 
-use Phauthentic\Session\Config;
+use Phauthentic\Infrastructure\Http\Session\Config;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session;
+namespace Phauthentic\Infrastructure\Http\Session;
 
 use RuntimeException;
 
@@ -29,7 +29,7 @@ class Config implements ConfigInterface
 {
     /**
      * @param array $config
-     * @return \Phauthentic\Session\Config
+     * @return \Phauthentic\Infrastructure\Http\Session\Config
      */
     public static function fromArray(array $config): Config
     {

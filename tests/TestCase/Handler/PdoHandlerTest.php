@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session\Test\TestCase\Handler;
+namespace Phauthentic\Infrastructure\Http\Session\Test\TestCase\Handler;
 
 use PDO;
-use Phauthentic\Session\Handler\PdoHandler;
+use Phauthentic\Infrastructure\Http\Session\Handler\PdoHandler;
 use PHPUnit\Framework\TestCase;
 
 /**

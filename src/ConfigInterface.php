@@ -14,7 +14,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session;
+namespace Phauthentic\Infrastructure\Http\Session;
 
 /**
  * Session Configuration Abstraction Interface
@@ -27,7 +27,7 @@ interface ConfigInterface
      * Sets use trans id
      *
      * @param bool $useTransSid
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setUseTransSid(bool $useTransSid): ConfigInterface;
 
@@ -35,7 +35,7 @@ interface ConfigInterface
      * Sets the serialization handler for session data
      *
      * @param string $php
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setSerializeHandler(string $php): ConfigInterface;
 
@@ -43,7 +43,7 @@ interface ConfigInterface
      * Sets use cookies
      *
      * @param bool $useCookies
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setUseCookies(bool $useCookies): ConfigInterface;
 
@@ -51,7 +51,7 @@ interface ConfigInterface
      * Sets the save path
      *
      * @param string $path
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setSavePath(string $path): ConfigInterface;
 
@@ -62,7 +62,7 @@ interface ConfigInterface
      * @link https://github.com/php/php-src/commit/a93a51c3bf4ea1638ce0adc4a899cb93531b9f0d
      * @link http://php.net/manual/en/session.configuration.php
      * @param string $handler
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setSaveHandler(string $handler): ConfigInterface;
 
@@ -105,7 +105,7 @@ interface ConfigInterface
      * Sets the garbage collection life time in minutes
      *
      * @param int $minutes GC life time in minutes
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setGcLifeTime(int $minutes): ConfigInterface;
 
@@ -118,7 +118,7 @@ interface ConfigInterface
 
     /**
      * @param bool $onlyHttp
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setCookieHttpOnly(bool $onlyHttp): ConfigInterface;
 
@@ -131,7 +131,7 @@ interface ConfigInterface
      * Sets the strict mode
      *
      * @param bool $useStrictMode Use strict mode
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setStrictMode(bool $useStrictMode): ConfigInterface;
 
@@ -139,13 +139,13 @@ interface ConfigInterface
      * Sets the cookie path
      *
      * @param string $path Path
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setCookiePath(string $path): ConfigInterface;
 
     /**
      * @param string $name
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setSessionName(string $name): ConfigInterface;
 
@@ -158,7 +158,7 @@ interface ConfigInterface
 
     /**
      * @param bool $secure Secure
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function setCookieSecure(bool $secure): ConfigInterface;
 }

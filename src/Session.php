@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session;
+namespace Phauthentic\Infrastructure\Http\Session;
 
 use Adbar\Dot;
 use SessionHandlerInterface;
@@ -46,7 +46,7 @@ class Session implements SessionInterface
     /**
      * The Session handler instance used as an engine for persisting the session data.
      *
-     * @var \Phauthentic\Session\ConfigInterface
+     * @var \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     protected ConfigInterface $config;
 
@@ -83,7 +83,7 @@ class Session implements SessionInterface
      *   the configuration array for the engine. You can set the `class` key to an already
      *   instantiated session handler object.
      *
-     * @param \Phauthentic\Session\ConfigInterface|null $config The Configuration to apply to this session object
+     * @param \Phauthentic\Infrastructure\Http\Session\ConfigInterface|null $config The Configuration to apply to this session object
      * @param \SessionHandlerInterface|null $handler
      */
     public function __construct(
@@ -108,7 +108,7 @@ class Session implements SessionInterface
     }
 
     /**
-     * @return \Phauthentic\Session\ConfigInterface
+     * @return \Phauthentic\Infrastructure\Http\Session\ConfigInterface
      */
     public function config(): ConfigInterface
     {
@@ -134,7 +134,7 @@ class Session implements SessionInterface
      * Starts the Session.
      *
      * @return bool True if session was started
-     * @throws \Phauthentic\Session\SessionException if the session was already started
+     * @throws \Phauthentic\Infrastructure\Http\Session\SessionException if the session was already started
      */
     public function start(): bool
     {

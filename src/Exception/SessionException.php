@@ -16,7 +16,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session;
+namespace Phauthentic\Infrastructure\Http\Session;
 
 use Exception;
 

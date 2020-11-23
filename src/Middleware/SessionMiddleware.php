@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session\Middleware;
+namespace Phauthentic\Infrastructure\Http\Session\Middleware;
 
-use Phauthentic\Session\SessionInterface;
+use Phauthentic\Infrastructure\Http\Session\SessionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -26,14 +26,14 @@ class SessionMiddleware implements MiddlewareInterface
     /**
      * Session Object
      *
-     * @var \Phauthentic\Session\SessionInterface
+     * @var \Phauthentic\Infrastructure\Http\Session\SessionInterface
      */
     protected $session;
 
     /**
      * Constructor.
      *
-     * @param \Phauthentic\Session\SessionInterface $session Session
+     * @param \Phauthentic\Infrastructure\Http\Session\SessionInterface $session Session
      */
     public function __construct(
         SessionInterface $session

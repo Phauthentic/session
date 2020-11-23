@@ -20,12 +20,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Phauthentic\\Session\\": "src/"
+            "Phauthentic\\Infrastructure\\Http\\Session\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Phauthentic\\Session\\Test\\": "tests/"
+            "Phauthentic\\Infrastructure\\Http\\Session\\Test\\": "tests/"
         }
     },
     "config": {

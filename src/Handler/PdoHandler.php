@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Phauthentic\Session\Handler;
+namespace Phauthentic\Infrastructure\Http\Session\Handler;
 
 use PDO;
 use PDOStatement;
