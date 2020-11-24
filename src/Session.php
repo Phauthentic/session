@@ -72,17 +72,6 @@ class Session implements SessionInterface
     protected bool $isCli = false;
 
     /**
-     * Constructor.
-     * ### Configuration:
-     * - timeout: The time in minutes the session should be valid for.
-     * - cookiePath: The url path for which session cookie is set. Maps to the
-     *   `session.cookie_path` php.ini config. Defaults to base path of app.
-     * - ini: A list of php.ini directives to change before the session start.
-     * - handler: An array containing at least the `class` key. To be used as the session
-     *   engine for persisting data. The rest of the keys in the array will be passed as
-     *   the configuration array for the engine. You can set the `class` key to an already
-     *   instantiated session handler object.
-     *
      * @param \Phauthentic\Infrastructure\Http\Session\ConfigInterface|null $config The Configuration to apply to this session object
      * @param \SessionHandlerInterface|null $handler
      */
@@ -94,7 +83,6 @@ class Session implements SessionInterface
             $this->config = $config;
         } else {
             $this->config = new Config();
-            $this->config->setUseTransSid(false);
         }
 
         if ($handler !== null) {
