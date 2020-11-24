@@ -131,6 +131,28 @@ class Session implements SessionInterface
     }
 
     /**
+     * Startup checks
+     *
+     * @return bool
+     */
+    protected function doStartupChecks(): bool
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            throw SessionException::alreadyStarted();
+        }
+
+        if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
+            return false;
+        }
+
+        if (!session_start()) {
+            throw SessionException::couldNotStart();
+        }
+
+        return true;
+    }
+
+    /**
      * Starts the Session.
      *
      * @return bool True if session was started
@@ -149,16 +171,8 @@ class Session implements SessionInterface
             return $this->started = true;
         }
 
-        if (session_status() === PHP_SESSION_ACTIVE) {
-            throw SessionException::alreadyStarted();
-        }
-
-        if (ini_get('session.use_cookies') && headers_sent($file, $line)) {
+        if (!$this->doStartupChecks()) {
             return false;
-        }
-
-        if (!session_start()) {
-            throw SessionException::couldNotStart();
         }
 
         $this->started = true;
