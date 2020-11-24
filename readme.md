@@ -9,12 +9,15 @@ A framework agnostic session library with convenient dot notation access.
 ## Session handlers
 
 Included:
-* Native php sessions
-* Simple database sessions via PDO (MySQL, Postgres,...)
+
+ * Native php sessions
+ * Simple database sessions via [PDO](https://www.php.net/manual/en/book.pdo.php) (MySQL, Postgres,...)
+ * PSR 16 cache based session
 
 External handlers:
-* [Redis](https://github.com/1ma/RedisSessionHandler)
-* [PSR6 and PSR16 cache session adapter](https://github.com/php-cache/session-handler)
+
+ * [Redis](https://github.com/1ma/RedisSessionHandler)
+ * [PSR6 cache session adapter](https://github.com/php-cache/session-handler)
 
 You can implement any other handler or use other already existing implementations that implement the native php [SessionHandlerInterface](http://php.net/manual/en/class.sessionhandlerinterface.php).
 

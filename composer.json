@@ -14,7 +14,9 @@
         "instituteweb/composer-scripts": "^1.1"
     },
     "suggest": {
-        "psr/http-server-middleware": "Required if you want to use the session middleware"
+        "psr/http-server-middleware": "Required if you want to use the session middleware",
+        "cache/session-handler": "PSR-6 based session handler",
+        "uma/redis-session-handler": "Redis based session handler - recommended!"
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
